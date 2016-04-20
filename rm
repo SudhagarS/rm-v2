@@ -1,0 +1,93 @@
+#! /usr/bin/env python
+import os
+from subprocess import call
+from sys import argv
+
+home = os.path.expanduser("~")
+bin_path = home + "/.rm-bin"
+cur_path = os.getcwd()
+
+
+def setup_bin():
+  # set up bin
+  if not os.path.exists(bin_path):
+    call(["mkdir", bin_path])
+
+
+def extract_super_option(argv):
+  # options
+  super_option = None
+  if len(argv) > 1 and argv[1][0:2] == '--':
+    super_option = argv[1][2:]
+  return super_option
+
+
+def extract_options(argv):
+  # options
+  options = ''
+  if len(argv) > 1 and argv[1][0] == '-':
+    options = argv[1][1:]
+  return options
+
+
+def mv_files(files_to_be_remvd):
+  for file in files_to_be_remvd:
+    call(["mv", cur_path + '/' + file, bin_path])
+
+
+def clear_older_files():
+  files = os.listdir(bin_path)
+  files.sort(key=lambda x: os.path.getmtime(bin_path + '/' + x), reverse=True)
+  to_be_deleted = files[20:]
+  for f in to_be_deleted:
+    if os.path.isdir(bin_path + '/' + f):
+      call(['rm', '-rf', bin_path + '/' + f])
+    else:
+      call(['rm', bin_path + '/' + f])
+
+
+def undo_last_delete():
+  files = os.listdir(bin_path)
+  files.sort(key=lambda x: os.path.getmtime(bin_path + '/' + x), reverse=True)
+  call(["mv", bin_path + '/' + files[0], cur_path])
+
+
+def clean_bin_directory():
+  files = os.listdir(bin_path)
+  for f in files:
+    if os.path.isdir(bin_path + '/' + f):
+      call(['rm', '-rf', bin_path + '/' + f])
+    else:
+      call(['rm', bin_path + '/' + f])
+
+
+def main():
+  global argv
+  setup_bin()
+
+  super_option = extract_super_option(argv)
+  if super_option:
+    if super_option == 'clean':
+      clean_bin_directory()
+    elif super_option == 'undo':
+      undo_last_delete()
+    else:
+      print "Invalid option. Usage\n  rm --undo: To undo the last delete. \n  rm --clean: To clear the bin directory ~/.rm-bin."
+    return
+
+  options = extract_options(argv)
+  if options:
+    files_to_be_remvd = argv[2:]
+  else:
+    files_to_be_remvd = argv[1:]
+
+  if len(files_to_be_remvd) == 0:
+    print "File name(s) missing.\nUsage: rm [-f] [-r] file ..."
+    return
+
+  mv_files(files_to_be_remvd)
+  clear_older_files()
+
+
+if __name__ == "__main__":
+  main()
