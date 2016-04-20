@@ -41,13 +41,15 @@ def clear_older_files():
   to_be_deleted = files[20:]
   for f in to_be_deleted:
     if os.path.isdir(bin_path + '/' + f):
-      call(['rm', '-rf', bin_path + '/' + f])
+      call(['/bin/rm', '-rf', bin_path + '/' + f])
     else:
-      call(['rm', bin_path + '/' + f])
+      call(['/bin/rm', bin_path + '/' + f])
 
 
 def undo_last_delete():
   files = os.listdir(bin_path)
+  if len(files) == 0:
+    return
   files.sort(key=lambda x: os.path.getmtime(bin_path + '/' + x), reverse=True)
   call(["mv", bin_path + '/' + files[0], cur_path])
 
@@ -56,9 +58,9 @@ def clean_bin_directory():
   files = os.listdir(bin_path)
   for f in files:
     if os.path.isdir(bin_path + '/' + f):
-      call(['rm', '-rf', bin_path + '/' + f])
+      call(['/bin/rm', '-rf', bin_path + '/' + f])
     else:
-      call(['rm', bin_path + '/' + f])
+      call(['/bin/rm', bin_path + '/' + f])
 
 
 def main():
