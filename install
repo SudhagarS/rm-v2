@@ -1,0 +1,14 @@
+#! /usr/bin/env python
+import os
+from subprocess import call, STDOUT
+
+FNULL = open(os.devnull, 'w')
+print 'Fetching the script...'
+call(['git', 'clone', 'https://github.com/SudhagarS/rm-v2/'], stdout=FNULL, stderr=STDOUT)
+
+print 'Moving it to /usr/local/bin...'
+call(['mv', 'rm-v2/rm', '/usr/local/bin/'])
+call(['chmod', 'u+x', '/usr/local/bin/rm'])
+call(['/bin/rm', '-rf', 'rm-v2'])
+
+print 'rm-v2 installed successfully.'
