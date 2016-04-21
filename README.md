@@ -6,9 +6,17 @@ on a important directory. You can restore the last removed file/directory with *
 
 ## Installation
 
-To install rm-v2, paste and run the following line in your terminal.
+To install rm-v2, paste and run the following commands in your terminal.
 
-    python -c "$(curl -fsSL https://raw.githubusercontent.com/SudhagarS/rm-v2/master/install)"
+    git clone https://github.com/SudhagarS/rm-v2/
+    
+    sudo mv rm-v2/rm /usr/local/bin/
+    
+    chmod u+x /usr/local/bin/rm
+    
+To remove the downloaded files once installed run
+    
+    rm -rf rm-v2
     
     
 ## Usage
