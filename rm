@@ -54,6 +54,15 @@ def undo_last_delete():
   call(["mv", bin_path + '/' + files[0], cur_path])
 
 
+def uninstall():
+  print 'Clearing bin...'
+  call(['/bin/rm', '-rf', bin_path])
+  #import sys, subprocess
+  os.remove('/usr/local/bin/rm')
+  #subprocess.Popen("python -c \"import os, time; time.sleep(1); os.remove('{}');\"".format('/usr/local/bin/rm'))
+  print 'Uninstalled successfully.'
+
+
 def clean_bin_directory():
   files = os.listdir(bin_path)
   for f in files:
@@ -73,6 +82,8 @@ def main():
       clean_bin_directory()
     elif super_option == 'undo':
       undo_last_delete()
+    elif super_option == 'uninstall':
+      uninstall()
     else:
       print "Invalid option. Usage\n  rm --undo: To undo the last delete. \n  rm --clean: To clear the bin directory ~/.rm-bin."
     return
