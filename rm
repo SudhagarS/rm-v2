@@ -85,7 +85,10 @@ def main():
     elif super_option == 'uninstall':
       uninstall()
     else:
-      print "Invalid option. Usage\n  rm --undo: To undo the last delete. \n  rm --clean: To clear the bin directory ~/.rm-bin."
+      print "Invalid option. Usage"
+      print "  rm --undo: To undo the last delete."
+      print "  rm --clean: To clear the bin directory ~/.rm-bin."
+      print "  rm --uninstall: To unsinstall rm-v2."
     return
 
   options = extract_options(argv)
